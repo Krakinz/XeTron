@@ -4,7 +4,7 @@
 "🐙";
 "🐙";
 const Discord = require("discord.js");
-const prefixModel = require("../../XɛTrση✭Database/antilink");
+const prefixModel = require("../../XɛTrση✭Database/goodbyechannel");
 const {
   PokeList
 } = require("../../pokelist");
@@ -16,15 +16,17 @@ var str = scriptName;
 var newScpt = str.slice(0, -3).toUpperCase();
 module.exports = {
   cooldown: 5,
-  name: "antilink",
-  description: "Setup antilink per server!",
-  userPerms: ["MANAGE_GUILD"],
+  name: "goodbyechannel",
+  description: "Change the goodbye channel per server!",
+  userPerms: ["MANAGE_CHANNELS"],
+  botPerms: ["MANAGE_CHANNELS"],
   run: async (client, message, args) => {
     if (!args[0]) {
       // """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-      const redArea = `❌${poke.toUpperCase()} says 𝐏𝐨𝐤é𝐎𝐩𝐬𝐢𝐞 \n-⧪   Wrong Usage!\n\n🧀𝐔𝐬𝐚𝐠𝐞\n+⧪   ${message.client.prefix}${newScpt.toLowerCase()} <on|off>`;
+      const redArea = `❌${poke.toUpperCase()} says 𝐏𝐨𝐤é𝐎𝐩𝐬𝐢𝐞 \n-⧪   Wrong Usage!\n\n🧀𝐔𝐬𝐚𝐠𝐞\n+⧪   ${message.client.prefix
+        }${newScpt.toLowerCase()} <#channel|off>`;
       const cyanArea = `💡${newScpt} Details:
-This is a special <per server(guild) per channel> setting that will let no users send any kind of links.`;
+Set the goodbye channel <per server>!`;
       require("dotenv").config();
       await message.react("❌");
       return await message.reply({
@@ -38,8 +40,7 @@ This is a special <per server(guild) per channel> setting that will let no users
           .setAuthor("♚乂ΣTЯỖN⚡", "https://i.postimg.cc/bwrSWMdK/XeTron.gif")
           .setFooter(`👈🏽Requested by ${message.author.username}`, message.author.avatarURL({
             dynamic: true
-          }))
-          .setDescription(`**\`\`\`diff
+          })).setDescription(`**\`\`\`diff
 ${redArea}\`\`\`
 
 \`\`\`fix
@@ -48,7 +49,7 @@ ${cyanArea}
         ],
       });
     }
-    if (args[0] === "On" || args[0] === "on") {
+    if (message.mentions.channels.first()) {
       const data = await prefixModel.findOne({
         Ӽɛȶʀօռֆɨɖ: message.guild.id
       });
@@ -56,25 +57,12 @@ ${cyanArea}
         await prefixModel.findOneAndRemove({
           Ӽɛȶʀօռֆɨɖ: message.guild.id
         });
-        message.reply({
-          embeds: [
-            new Discord.MessageEmbed()
-            .setTimestamp()
-            .setURL("https://github.com/krakinz")
-            .setColor(process.env.redArea || "#B33F40")
-            .setTitle(`**\`\`\`${newScpt} Command Helper\`\`\`**`)
-            .setThumbnail(`https://i.some-random-api.ml/pokemon/${poke}.png`)
-            .setAuthor("♚乂ΣTЯỖN⚡", "https://i.postimg.cc/bwrSWMdK/XeTron.gif")
-            .setFooter(`👈🏽Requested by ${message.author.username}`, message.author.avatarURL({
-              dynamic: true
-            }))
-            .setDescription(`**\`\`\`diff
-+Antilink is now active!
-\`\`\`**`),
-          ],
-        });
+        message.reply(
+          `Leave Channel set to ${message.mentions.channels.first()}`
+        );
         let newData = new prefixModel({
-          Ӽɛȶʀօռֆɨɖ: message.guild.id
+          Bye: message.mentions.channels.first().id,
+          Ӽɛȶʀօռֆɨɖ: message.guild.id,
         });
         newData.save();
       } else if (!data) {
@@ -86,21 +74,27 @@ ${cyanArea}
             .setColor(process.env.redArea || "#B33F40")
             .setTitle(`**\`\`\`${newScpt} Command Helper\`\`\`**`)
             .setThumbnail(`https://i.some-random-api.ml/pokemon/${poke}.png`)
-            .setAuthor("♚乂ΣTЯỖN⚡", "https://i.postimg.cc/bwrSWMdK/XeTron.gif")
-            .setFooter(`👈🏽Requested by ${message.author.username}`, message.author.avatarURL({
-              dynamic: true
-            }))
-            .setDescription(`**\`\`\`diff
-+Antilink is now active!      
+            .setAuthor(
+              "♚乂ΣTЯỖN⚡",
+              "https://i.postimg.cc/bwrSWMdK/XeTron.gif"
+            )
+            .setFooter(
+              `👈🏽Requested by ${message.author.username}`,
+              message.author.avatarURL({
+                dynamic: true
+              })
+            ).setDescription(`**\`\`\`diff
++Leave Channel set to ${message.mentions.channels.first()}
 \`\`\`**`),
           ],
         });
         let newData = new prefixModel({
-          Ӽɛȶʀօռֆɨɖ: message.guild.id
+          Bye: message.mentions.channels.first().id,
+          Ӽɛȶʀօռֆɨɖ: message.guild.id,
         });
         newData.save();
       }
-    } else if (args[0] === "off" || args[0] === "Off") {
+    } else if (args[0] === "off") {
       const data2 = await prefixModel.findOne({
         Ӽɛȶʀօռֆɨɖ: message.guild.id,
       });
@@ -108,7 +102,7 @@ ${cyanArea}
         await prefixModel.findOneAndRemove({
           Ӽɛȶʀօռֆɨɖ: message.guild.id
         });
-        return message.reply({
+        message.reply({
           embeds: [
             new Discord.MessageEmbed()
             .setTimestamp()
@@ -116,12 +110,17 @@ ${cyanArea}
             .setColor(process.env.redArea || "#B33F40")
             .setTitle(`**\`\`\`${newScpt} Command Helper\`\`\`**`)
             .setThumbnail(`https://i.some-random-api.ml/pokemon/${poke}.png`)
-            .setAuthor("♚乂ΣTЯỖN⚡", "https://i.postimg.cc/bwrSWMdK/XeTron.gif")
-            .setFooter(`👈🏽Requested by ${message.author.username}`, message.author.avatarURL({
-              dynamic: true
-            }))
-            .setDescription(`**\`\`\`diff
--Antilink has been turned off!     
+            .setAuthor(
+              "♚乂ΣTЯỖN⚡",
+              "https://i.postimg.cc/bwrSWMdK/XeTron.gif"
+            )
+            .setFooter(
+              `👈🏽Requested by ${message.author.username}`,
+              message.author.avatarURL({
+                dynamic: true
+              })
+            ).setDescription(`**\`\`\`diff
+-Leave channel has been turned off!     
 \`\`\`**`),
           ],
         });
@@ -134,12 +133,17 @@ ${cyanArea}
             .setColor(process.env.redArea || "#B33F40")
             .setTitle(`**\`\`\`${newScpt} Command Helper\`\`\`**`)
             .setThumbnail(`https://i.some-random-api.ml/pokemon/${poke}.png`)
-            .setAuthor("♚乂ΣTЯỖN⚡", "https://i.postimg.cc/bwrSWMdK/XeTron.gif")
-            .setFooter(`👈🏽Requested by ${message.author.username}`, message.author.avatarURL({
-              dynamic: true
-            }))
-            .setDescription(`**\`\`\`diff
--Antilink isn't setup!    
+            .setAuthor(
+              "♚乂ΣTЯỖN⚡",
+              "https://i.postimg.cc/bwrSWMdK/XeTron.gif"
+            )
+            .setFooter(
+              `👈🏽Requested by ${message.author.username}`,
+              message.author.avatarURL({
+                dynamic: true
+              })
+            ).setDescription(`**\`\`\`diff
+-Leave channel isn't setup!    
 \`\`\`**`),
           ],
         });
