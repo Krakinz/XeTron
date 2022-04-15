@@ -6,27 +6,33 @@
 const Discord = require("discord.js");
 module.exports = {
   cooldown: 5,
-  name: "clear",
-  description: "delete the given number of messages",
-  userPerms: ["MANAGE_MESSAGES"],
-  botPerms: ["MANAGE_MESSAGES"],
+  name: "avatar",
+  aliases: ["av"],
+  category: "Utility",
+  usage: "avatar/avatar @user",
+  description: "Gives avatar for message author or mentioned user.",
+  botPerms: ["EMBED_LINKS", "MANAGE_MESSAGES"],
   run: async (client, message, args) => {
-    const fetched = message.channel || message.mentions.members.first();
-    let messageArray = message.content.split(" ");
-    const amount = parseInt(args[0]) + 1;
+    let user = message.mentions.users.first() || message.author;
+    let embed = new Discord.MessageEmbed()
+      .setColor("RANDOM")
+      .setTitle(`${user.username}'s Avatar`)
+      .setDescription(
+        `[Avatar Link](${user.displayAvatarURL({
+          size: 2048,
+          dynamic: true,
+          format: "png",
+        })})`
+      )
+      .setImage(user.avatarURL({
+        size: 2048,
+        dynamic: true,
+        format: "png"
+      }));
 
-    if (isNaN(amount)) {
-      return message.reply(
-        `${message.author.username}, you can only clear messages from 1-99`
-      );
-    } else if (amount <= 1 || amount > 100) {
-      return message.reply(
-        `${message.author.username}, you can only clear messages from 1-99`
-      );
-    }
-
-    fetched.bulkDelete(amount, true);
-    fetched.bulkDelete(amount);
+    message.reply({
+      embeds: [embed]
+    });
   },
 };
 "🐙";
