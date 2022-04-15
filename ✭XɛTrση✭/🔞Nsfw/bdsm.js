@@ -4,7 +4,7 @@
 "🐙";
 "🐙";
 require("dotenv").config();
-const hmtai = require("hmtai");
+const akaneko = require("akaneko");
 const Discord = require("discord.js");
 const {
   PokeList
@@ -17,7 +17,7 @@ var str = scriptName;
 var newScpt = str.slice(0, -3).toUpperCase();
 module.exports = {
   cooldown: 5,
-  name: "public",
+  name: "bdsm",
   aliases: [],
   category: "nsfw",
   description: "Get some wallpapers",
@@ -59,7 +59,7 @@ ${cyanArea}
           dynamic: true
         })
       )
-      .setImage(await hmtai.nsfw.public());
+      .setImage(await akaneko.nsfw.bdsm());
     return message.reply({
       embeds: [danteysex]
     });

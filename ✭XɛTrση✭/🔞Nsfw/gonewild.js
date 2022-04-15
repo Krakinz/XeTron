@@ -4,8 +4,9 @@
 "🐙";
 "🐙";
 require("dotenv").config();
-const hmtai = require("hmtai");
-const Discord = require("discord.js");
+const Discord = module.require("discord.js");
+const NSFW = require("discord-nsfw");
+const nsfw = new NSFW();
 const {
   PokeList
 } = require("../../pokelist");
@@ -17,11 +18,11 @@ var str = scriptName;
 var newScpt = str.slice(0, -3).toUpperCase();
 module.exports = {
   cooldown: 5,
-  name: "public",
-  aliases: [],
+  name: "gonewild",
   category: "nsfw",
-  description: "Get some wallpapers",
+  description: "Gone wild.",
   run: async (client, message, args) => {
+    var errMessage = "This is not an NSFW Channel";
     if (!message.channel.nsfw) {
       `❌""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""❌`;
       const redArea = `❌${poke.toUpperCase()} says 𝐏𝐨𝐤é𝐎𝐩𝐬𝐢𝐞 \n-⧪   Wrong Channel !!\n\n🧀𝐔𝐬𝐚𝐠𝐞\n+⧪   ${message.client.prefix
@@ -50,8 +51,9 @@ ${cyanArea}
       });
     }
     `❌""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""❌`;
-    let danteysex = new Discord.MessageEmbed()
-      .setColor(process.env.XeTrons || "#FFBF00")
+    const image = await nsfw.gonewild();
+    const embed = new Discord.MessageEmbed()
+      .setTitle(`Gonewild`)
       .setAuthor("⚡乂ΣTЯỖN☆•", "https://i.postimg.cc/bwrSWMdK/XeTron.gif")
       .setFooter(
         `👈🏽Requested by ${message.author.username}`,
@@ -59,9 +61,10 @@ ${cyanArea}
           dynamic: true
         })
       )
-      .setImage(await hmtai.nsfw.public());
-    return message.reply({
-      embeds: [danteysex]
+      .setColor(process.env.XeTrons || "#FFBF00")
+      .setImage(image);
+    message.reply({
+      embeds: [embed]
     });
   },
 };

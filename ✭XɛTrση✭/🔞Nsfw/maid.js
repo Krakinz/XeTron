@@ -4,7 +4,7 @@
 "🐙";
 "🐙";
 require("dotenv").config();
-const hmtai = require("hmtai");
+const akaneko = require("akaneko");
 const Discord = require("discord.js");
 const {
   PokeList
@@ -17,10 +17,11 @@ var str = scriptName;
 var newScpt = str.slice(0, -3).toUpperCase();
 module.exports = {
   cooldown: 5,
-  name: "public",
-  aliases: [],
+  name: "maid",
   category: "nsfw",
-  description: "Get some wallpapers",
+  description: "Sends maid pics",
+  usage: "[command]",
+  botPerms: ["EMBED_LINKS"],
   run: async (client, message, args) => {
     if (!message.channel.nsfw) {
       `❌""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""❌`;
@@ -59,7 +60,7 @@ ${cyanArea}
           dynamic: true
         })
       )
-      .setImage(await hmtai.nsfw.public());
+      .setImage(await akaneko.nsfw.maid());
     return message.reply({
       embeds: [danteysex]
     });

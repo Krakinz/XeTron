@@ -4,8 +4,9 @@
 "🐙";
 "🐙";
 require("dotenv").config();
-const hmtai = require("hmtai");
+const client = require("nekos.life");
 const Discord = require("discord.js");
+const neko = new client();
 const {
   PokeList
 } = require("../../pokelist");
@@ -17,11 +18,11 @@ var str = scriptName;
 var newScpt = str.slice(0, -3).toUpperCase();
 module.exports = {
   cooldown: 5,
-  name: "public",
-  aliases: [],
+  name: "feetgif",
   category: "nsfw",
-  description: "Get some wallpapers",
+  usage: "[command]",
   run: async (client, message, args) => {
+    var errMessage = "This is not an NSFW Channel";
     if (!message.channel.nsfw) {
       `❌""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""❌`;
       const redArea = `❌${poke.toUpperCase()} says 𝐏𝐨𝐤é𝐎𝐩𝐬𝐢𝐞 \n-⧪   Wrong Channel !!\n\n🧀𝐔𝐬𝐚𝐠𝐞\n+⧪   ${message.client.prefix
@@ -50,19 +51,25 @@ ${cyanArea}
       });
     }
     `❌""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""❌`;
-    let danteysex = new Discord.MessageEmbed()
-      .setColor(process.env.XeTrons || "#FFBF00")
-      .setAuthor("⚡乂ΣTЯỖN☆•", "https://i.postimg.cc/bwrSWMdK/XeTron.gif")
-      .setFooter(
-        `👈🏽Requested by ${message.author.username}`,
-        message.author.avatarURL({
-          dynamic: true
-        })
-      )
-      .setImage(await hmtai.nsfw.public());
-    return message.reply({
-      embeds: [danteysex]
-    });
+    async function work() {
+      let owo = await neko.nsfw.feetGif();
+      const cumslut = new Discord.MessageEmbed()
+        .setTitle("feetGif")
+        .setImage(owo.url)
+        .setAuthor("⚡乂ΣTЯỖN☆•", "https://i.postimg.cc/bwrSWMdK/XeTron.gif")
+        .setFooter(
+          `👈🏽Requested by ${message.author.username}`,
+          message.author.avatarURL({
+            dynamic: true
+          })
+        )
+        .setColor(process.env.XeTrons || "#FFBF00")
+        .setURL(owo.url);
+      message.reply({
+        embeds: [cumslut]
+      });
+    }
+    work();
   },
 };
 ("🐙");

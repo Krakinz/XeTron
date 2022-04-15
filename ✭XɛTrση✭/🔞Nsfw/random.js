@@ -4,7 +4,8 @@
 "🐙";
 "🐙";
 require("dotenv").config();
-const hmtai = require("hmtai");
+const RandomHub = require("random-hub").RandomHub;
+const hub = new RandomHub();
 const Discord = require("discord.js");
 const {
   PokeList
@@ -17,7 +18,7 @@ var str = scriptName;
 var newScpt = str.slice(0, -3).toUpperCase();
 module.exports = {
   cooldown: 5,
-  name: "public",
+  name: "random",
   aliases: [],
   category: "nsfw",
   description: "Get some wallpapers",
@@ -51,6 +52,8 @@ ${cyanArea}
     }
     `❌""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""❌`;
     let danteysex = new Discord.MessageEmbed()
+      .setImage(hub.getRandomHub())
+      .setTimestamp()
       .setColor(process.env.XeTrons || "#FFBF00")
       .setAuthor("⚡乂ΣTЯỖN☆•", "https://i.postimg.cc/bwrSWMdK/XeTron.gif")
       .setFooter(
@@ -58,8 +61,7 @@ ${cyanArea}
         message.author.avatarURL({
           dynamic: true
         })
-      )
-      .setImage(await hmtai.nsfw.public());
+      );
     return message.reply({
       embeds: [danteysex]
     });

@@ -4,8 +4,9 @@
 "🐙";
 "🐙";
 require("dotenv").config();
-const hmtai = require("hmtai");
-const Discord = require("discord.js");
+const Discord = module.require("discord.js");
+const NSFW = require("discord-nsfw");
+const nsfw = new NSFW();
 const {
   PokeList
 } = require("../../pokelist");
@@ -17,10 +18,9 @@ var str = scriptName;
 var newScpt = str.slice(0, -3).toUpperCase();
 module.exports = {
   cooldown: 5,
-  name: "public",
-  aliases: [],
+  name: "hentaithigh",
   category: "nsfw",
-  description: "Get some wallpapers",
+  description: "Sends hentai thigh pictures.",
   run: async (client, message, args) => {
     if (!message.channel.nsfw) {
       `❌""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""❌`;
@@ -50,8 +50,9 @@ ${cyanArea}
       });
     }
     `❌""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""❌`;
-    let danteysex = new Discord.MessageEmbed()
-      .setColor(process.env.XeTrons || "#FFBF00")
+    const image = await nsfw.hentaithigh();
+    const embed = new Discord.MessageEmbed()
+      .setTitle(`Hentai thigh`)
       .setAuthor("⚡乂ΣTЯỖN☆•", "https://i.postimg.cc/bwrSWMdK/XeTron.gif")
       .setFooter(
         `👈🏽Requested by ${message.author.username}`,
@@ -59,9 +60,10 @@ ${cyanArea}
           dynamic: true
         })
       )
-      .setImage(await hmtai.nsfw.public());
-    return message.reply({
-      embeds: [danteysex]
+      .setColor(process.env.XeTrons || "#FFBF00")
+      .setImage(image);
+    message.reply({
+      embeds: [embed]
     });
   },
 };

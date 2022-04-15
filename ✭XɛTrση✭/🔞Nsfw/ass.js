@@ -4,8 +4,8 @@
 "🐙";
 "🐙";
 require("dotenv").config();
-const hmtai = require("hmtai");
 const Discord = require("discord.js");
+const rp = require("request-promise-native");
 const {
   PokeList
 } = require("../../pokelist");
@@ -17,11 +17,11 @@ var str = scriptName;
 var newScpt = str.slice(0, -3).toUpperCase();
 module.exports = {
   cooldown: 5,
-  name: "public",
-  aliases: [],
+  name: "ass",
   category: "nsfw",
-  description: "Get some wallpapers",
-  run: async (client, message, args) => {
+  description: "Sends ass",
+  botPerms: ["EMBED_LINKS"],
+  run: async (client, message, args, level) => {
     if (!message.channel.nsfw) {
       `❌""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""❌`;
       const redArea = `❌${poke.toUpperCase()} says 𝐏𝐨𝐤é𝐎𝐩𝐬𝐢𝐞 \n-⧪   Wrong Channel !!\n\n🧀𝐔𝐬𝐚𝐠𝐞\n+⧪   ${message.client.prefix
@@ -50,19 +50,33 @@ ${cyanArea}
       });
     }
     `❌""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""❌`;
-    let danteysex = new Discord.MessageEmbed()
-      .setColor(process.env.XeTrons || "#FFBF00")
-      .setAuthor("⚡乂ΣTЯỖN☆•", "https://i.postimg.cc/bwrSWMdK/XeTron.gif")
-      .setFooter(
-        `👈🏽Requested by ${message.author.username}`,
-        message.author.avatarURL({
-          dynamic: true
-        })
-      )
-      .setImage(await hmtai.nsfw.public());
-    return message.reply({
-      embeds: [danteysex]
-    });
+    return rp
+      .get("http://api.obutts.ru/butts/0/1/random")
+      .then(JSON.parse)
+      .then(function (res) {
+        return rp.get({
+          url: "http://media.obutts.ru/" + res[0].preview,
+          encoding: null,
+        });
+      })
+      .then(function (res) {
+        const ass = new Discord.MessageEmbed()
+          .setTitle("Ass")
+          .setColor(process.env.XeTrons || "#FFBF00")
+          .setImage("attachment://file.png")
+          .setAuthor("⚡乂ΣTЯỖN☆•", "https://i.postimg.cc/bwrSWMdK/XeTron.gif")
+          .setFooter(`👈🏽Requested by ${message.author.username}`, message.author.avatarURL({
+            dynamic: true
+          }))
+          .attachFiles([{
+            attachment: res,
+            name: "file.png"
+          }]);
+
+        message.reply({
+          embeds: [ass]
+        });
+      });
   },
 };
 ("🐙");

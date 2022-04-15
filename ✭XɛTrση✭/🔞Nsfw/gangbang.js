@@ -4,7 +4,7 @@
 "🐙";
 "🐙";
 require("dotenv").config();
-const hmtai = require("hmtai");
+const akaneko = require("akaneko");
 const Discord = require("discord.js");
 const {
   PokeList
@@ -17,7 +17,7 @@ var str = scriptName;
 var newScpt = str.slice(0, -3).toUpperCase();
 module.exports = {
   cooldown: 5,
-  name: "public",
+  name: "gangbang",
   aliases: [],
   category: "nsfw",
   description: "Get some wallpapers",
@@ -50,7 +50,7 @@ ${cyanArea}
       });
     }
     `❌""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""❌`;
-    let danteysex = new Discord.MessageEmbed()
+    let danteysex = new MessageEmbed()
       .setColor(process.env.XeTrons || "#FFBF00")
       .setAuthor("⚡乂ΣTЯỖN☆•", "https://i.postimg.cc/bwrSWMdK/XeTron.gif")
       .setFooter(
@@ -59,7 +59,7 @@ ${cyanArea}
           dynamic: true
         })
       )
-      .setImage(await hmtai.nsfw.public());
+      .setImage(await akaneko.nsfw.gangbang());
     return message.reply({
       embeds: [danteysex]
     });

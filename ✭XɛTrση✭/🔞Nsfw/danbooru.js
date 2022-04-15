@@ -4,8 +4,8 @@
 "🐙";
 "🐙";
 require("dotenv").config();
-const hmtai = require("hmtai");
 const Discord = require("discord.js");
+const booru = require("booru");
 const {
   PokeList
 } = require("../../pokelist");
@@ -17,11 +17,12 @@ var str = scriptName;
 var newScpt = str.slice(0, -3).toUpperCase();
 module.exports = {
   cooldown: 5,
-  name: "public",
-  aliases: [],
+  name: "danbooru",
   category: "nsfw",
-  description: "Get some wallpapers",
-  run: async (client, message, args) => {
+  description: "Searches danbooru image board",
+  botPerms: ["EMBED_LINKS"],
+  run: async (bot, message, args, level) => {
+    var errMessage = "This is not an nsfw Channel";
     if (!message.channel.nsfw) {
       `❌""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""❌`;
       const redArea = `❌${poke.toUpperCase()} says 𝐏𝐨𝐤é𝐎𝐩𝐬𝐢𝐞 \n-⧪   Wrong Channel !!\n\n🧀𝐔𝐬𝐚𝐠𝐞\n+⧪   ${message.client.prefix
@@ -50,19 +51,42 @@ ${cyanArea}
       });
     }
     `❌""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""❌`;
-    let danteysex = new Discord.MessageEmbed()
-      .setColor(process.env.XeTrons || "#FFBF00")
-      .setAuthor("⚡乂ΣTЯỖN☆•", "https://i.postimg.cc/bwrSWMdK/XeTron.gif")
-      .setFooter(
-        `👈🏽Requested by ${message.author.username}`,
-        message.author.avatarURL({
-          dynamic: true
-        })
-      )
-      .setImage(await hmtai.nsfw.public());
-    return message.reply({
-      embeds: [danteysex]
-    });
+    if (
+      message.content.toUpperCase().includes("LOLI") ||
+      message.content.toUpperCase().includes("GORE")
+    )
+      return message.reply(
+        "That kind of stuff is not allowed! Not even in nsfw channels!"
+      );
+    var query = message.content.split(/\s+/g).slice(1).join(" ");
+    booru
+      .search("db", [query], {
+        random: true
+      })
+      .then(booru.commonfy)
+      .then((images) => {
+        for (let image of images) {
+          const embed = new Discord.MessageEmbed()
+            .setTitle(`Danbooru: ${query}`)
+            .setImage(image.common.file_url)
+            .setColor(process.env.XeTrons || "#FFBF00")
+            .setAuthor("⚡乂ΣTЯỖN☆•", "https://i.postimg.cc/bwrSWMdK/XeTron.gif")
+            .setFooter(`👈🏽Requested by ${message.author.username}`, message.author.avatarURL({
+              dynamic: true
+            }))
+            .setURL(image.common.file_url);
+          return message.reply({
+            embeds: [embed]
+          });
+        }
+      })
+      .catch((err) => {
+        if (err.name === "booruError") {
+          return message.reply(`No results found for **${query}**!`);
+        } else {
+          return message.reply(`No results found for **${query}**!`);
+        }
+      });
   },
 };
 ("🐙");
