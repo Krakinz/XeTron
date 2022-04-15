@@ -4,10 +4,8 @@
 "🐙";
 "🐙";
 require("dotenv").config();
-const {
-  Anime
-} = require("djs-anime");
 const Discord = require("discord.js");
+const malScraper = require("mal-scraper");
 const {
   PokeList
 } = require("../../pokelist");
@@ -19,16 +17,16 @@ var str = scriptName;
 var newScpt = str.slice(0, -3).toUpperCase();
 module.exports = {
   cooldown: 5,
-  name: "bonk",
+  name: "anime",
+  description: "Get info about an anime",
+  usage: "[command | Anime]",
   run: async (client, message, args) => {
-    const target =
-      message.mentions.members.first() ||
-      message.guild.members.cache.get(args[0]);
-    if (!target) {
+    const search = `${args}`;
+    if (!search) {
       // """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
       const redArea = `❌${poke.toUpperCase()} says 𝐏𝐨𝐤é𝐎𝐩𝐬𝐢𝐞 \n-⧪   Wrong Usage !!\n\n🧀𝐔𝐬𝐚𝐠𝐞\n+⧪   ${message.client.prefix
         }${newScpt.toLowerCase()} <on|off>`;
-      const cyanArea = `💡${newScpt} Details:\n\nBonkkkk Lmao...`;
+      const cyanArea = `💡${newScpt} Details:\n\nGet info about any anime!`;
       require("dotenv").config();
       await message.react("❌");
       return await message.reply({
@@ -52,13 +50,45 @@ ${cyanArea}
       });
     }
     `❌""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""❌`;
-    const XɛTrσηAnime = new Anime({
-      message: message,
-      embedTitle: `**\`\`\`${message.author.username} boynked ${target.displayName}\`\`\`**`,
-      embedFooter: `Reqstd by ${message.author.username}`,
-      embedColor: process.env.XeTrons || "#FFBF00",
+    malScraper.getInfoFromName(search).then((data) => {
+      message.reply({
+        embeds: [
+          new Discord.MessageEmbed()
+          .setTimestamp()
+          .setColor(process.env.XeTrons || "#FFBF00")
+          .setURL("https://github.com/krakinz")
+          .setAuthor("⚡XɛTrση☆", "https://i.postimg.cc/bwrSWMdK/XeTron.gif")
+          .setThumbnail(data.picture)
+          .setTitle(`My Anime Search result for ${args}`.split(",").join(" "))
+          .addField("Title", `\`${data.title}\``, true)
+          .addField("Premiered", `\`${data.premiered}\``, true)
+          .addField("Broadcast", `\`${data.broadcast}\``, true)
+          .addField("Genres", `\`${data.genres}\``, true)
+          .addField("English Title", `\`${data.englishTitle}\``, true)
+          .addField("Japanese Title", `\`${data.japaneseTitle}\``, true)
+          .addField("Type", `\`${data.type}\``, true)
+          .addField("Episodes", `\`${data.episodes}\``, true)
+          .addField("Rating", `\`${data.rating}\``, true)
+          .addField("Aired", `\`${data.aired}\``, true)
+          .addField("Score", `\`${data.score}\``, true)
+          .addField("Favorite", `\`${data.favorites}\``, true)
+          .addField("Ranked", `\`${data.ranked}\``, true)
+          .addField("Duration", `\`${data.duration}\``, true)
+          .addField("Studios", `\`${data.studios}\``, true)
+          .addField("Popularity", `\`${data.popularity}\``, true)
+          .addField("Members", `\`${data.members}\``, true)
+          .addField("Score Stats", `\`${data.scoreStats}\``, true)
+          .addField("Source", `\`${data.source}\``, true)
+          .addField("Synonyms", `\`${data.synonyms}\``, true)
+          .addField("Status", `\`${data.status}\``, true)
+          .addField("Identifier", `\`${data.id}\``, true)
+          .addField("Link", `[Website](${data.url})`, true)
+          .setFooter(`👈🏽Requested by ${message.author.username}`, message.author.avatarURL({
+            dynamic: true
+          })),
+        ],
+      });
     });
-    XɛTrσηAnime.bonk();
   },
 };
 ("🐙");

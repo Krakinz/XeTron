@@ -19,7 +19,7 @@ var str = scriptName;
 var newScpt = str.slice(0, -3).toUpperCase();
 module.exports = {
   cooldown: 5,
-  name: "bonk",
+  name: "wave",
   run: async (client, message, args) => {
     const target =
       message.mentions.members.first() ||
@@ -28,7 +28,7 @@ module.exports = {
       // """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
       const redArea = `❌${poke.toUpperCase()} says 𝐏𝐨𝐤é𝐎𝐩𝐬𝐢𝐞 \n-⧪   Wrong Usage !!\n\n🧀𝐔𝐬𝐚𝐠𝐞\n+⧪   ${message.client.prefix
         }${newScpt.toLowerCase()} <on|off>`;
-      const cyanArea = `💡${newScpt} Details:\n\nBonkkkk Lmao...`;
+      const cyanArea = `💡${newScpt} Details:\n\nHeyyyy Hiiii....`;
       require("dotenv").config();
       await message.react("❌");
       return await message.reply({
@@ -54,11 +54,11 @@ ${cyanArea}
     `❌""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""❌`;
     const XɛTrσηAnime = new Anime({
       message: message,
-      embedTitle: `**\`\`\`${message.author.username} boynked ${target.displayName}\`\`\`**`,
+      embedTitle: `**\`\`\`${message.author.username} waving at ${target.displayName}.\`\`\`**`,
       embedFooter: `Reqstd by ${message.author.username}`,
       embedColor: process.env.XeTrons || "#FFBF00",
     });
-    XɛTrσηAnime.bonk();
+    XɛTrσηAnime.wave();
   },
 };
 ("🐙");

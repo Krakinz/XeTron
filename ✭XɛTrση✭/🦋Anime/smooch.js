@@ -4,9 +4,7 @@
 "🐙";
 "🐙";
 require("dotenv").config();
-const {
-  Anime
-} = require("djs-anime");
+const random = require("something-random-on-discord").Random;
 const Discord = require("discord.js");
 const {
   PokeList
@@ -19,7 +17,10 @@ var str = scriptName;
 var newScpt = str.slice(0, -3).toUpperCase();
 module.exports = {
   cooldown: 5,
-  name: "bonk",
+  name: "smooch",
+  category: "Fun",
+  aliases: [],
+  description: "smooch someone",
   run: async (client, message, args) => {
     const target =
       message.mentions.members.first() ||
@@ -28,7 +29,7 @@ module.exports = {
       // """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
       const redArea = `❌${poke.toUpperCase()} says 𝐏𝐨𝐤é𝐎𝐩𝐬𝐢𝐞 \n-⧪   Wrong Usage !!\n\n🧀𝐔𝐬𝐚𝐠𝐞\n+⧪   ${message.client.prefix
         }${newScpt.toLowerCase()} <on|off>`;
-      const cyanArea = `💡${newScpt} Details:\n\nBonkkkk Lmao...`;
+      const cyanArea = `💡${newScpt} Details:\n\n♥Wait is this romantic moment??\Maybe Proposal?`;
       require("dotenv").config();
       await message.react("❌");
       return await message.reply({
@@ -52,13 +53,29 @@ ${cyanArea}
       });
     }
     `❌""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""❌`;
-    const XɛTrσηAnime = new Anime({
-      message: message,
-      embedTitle: `**\`\`\`${message.author.username} boynked ${target.displayName}\`\`\`**`,
-      embedFooter: `Reqstd by ${message.author.username}`,
-      embedColor: process.env.XeTrons || "#FFBF00",
+    let data = await random.getAnimeImgURL("kiss");
+    const smoochhard = new Discord.MessageEmbed()
+      .setTimestamp()
+      .setImage(data)
+      .setColor(process.env.XeTrons || "#FFBF00")
+      .setTitle("So Wet Smooch wow💋")
+      .setURL("https://github.com/krakinz")
+      .setAuthor("⚡𝐗𝐞𝐓𝐫𝐨𝐧⚡", "https://i.postimg.cc/bwrSWMdK/XeTron.gif")
+      .setThumbnail("https://i.postimg.cc/4xbGh8D4/HyCore.jpg")
+      .setFooter(
+        `👈🏽Requested by ${message.author.username}`,
+        message.author.avatarURL({
+          dynamic: true
+        })
+      )
+      .addField(
+        `**\`So Romantic!\`**`,
+        `${message.author.username} gave a sweet kiss to ${target.user.username}.Now you better kiss ${message.author.username} back`,
+        true
+      );
+    return message.reply({
+      embeds: [smoochhard]
     });
-    XɛTrσηAnime.bonk();
   },
 };
 ("🐙");
