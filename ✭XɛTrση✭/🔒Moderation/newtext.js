@@ -15,25 +15,16 @@ var str = scriptName;
 var newScpt = str.slice(0, -3).toUpperCase();
 module.exports = {
   cooldown: 5,
-  name: "ban",
-  category: "moderation",
-  description: "Ban anyone with one shot whithout knowing anyone xD",
-  usage: "ban <@user> <reason>",
-  userPerms: ["BAN_MEMBERS"],
-  botPerms: ["EMBED_LINKS", "BAN_MEMBERS"],
+  name: "newtext",
+  description: "Create text Channels in your Server",
+  userPerms: ["MANAGE_CHANNELS"],
+  botPerms: ["EMBED_LINKS", "MANAGE_CHANNELS"],
   run: async (client, message, args) => {
-    let reason = args.slice(1).join(" ");
-    if (!reason) reason = "Unspecified";
-
-    const target =
-      message.mentions.members.first() ||
-      message.guild.users.cache.get(args[0]);
-
-    if (!target) {
+    if (!args[0]) {
       // """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
       const redArea = `❌${poke.toUpperCase()} says 𝐏𝐨𝐤é𝐎𝐩𝐬𝐢𝐞 \n-⧪   Wrong Usage!\n\n🧀𝐔𝐬𝐚𝐠𝐞\n+⧪   ${message.client.prefix
-        }${newScpt.toLowerCase()} <mention>`;
-      const cyanArea = `💡${newScpt} Details:\n\nBan anyone with one shot whithout knowing anyone xD.`;
+        }${newScpt.toLowerCase()} <textchannel name>`;
+      const cyanArea = `💡${newScpt} Details:\n\nCreate New Text Channel in your Server.`;
       require("dotenv").config();
       await message.react("❌");
       return await message.reply({
@@ -56,39 +47,18 @@ ${cyanArea}
         ],
       });
     }
-    if (target.id === client.user.id) {
-      return await message.reply(`\`\`\`diff
--${message.author.username}, You can not do that to Me Bruv!
-\`\`\``);
-    }
 
-    if (target.id === message.author.id) {
-      return await message.reply(`\`\`\`diff
--${message.author.username}, You can not ban yourself!
-\`\`\``);
-    }
-    if (target.id === message.guild.ownerId) {
-      return await message.reply(`\`\`\`diff
--You cannot Ban The Server Owner
-\`\`\``);
-    }
+    message.guild.channels.create(args.slice(0).join(" "), {
+      type: "text"
+    });
 
-    let embed = new Discord.MessageEmbed()
-      .setTitle("Action : Ban")
-      .setDescription(`Banned ${target} (${target.id})\nReason: ${reason}`)
-      .setColor("#ff2050")
-      .setThumbnail(target.avatarURL)
-      .setFooter(`Banned by ${message.author.tag}`);
-
-    target
-      .ban({
-        reason: reason,
-      })
-      .then(() => {
-        message.reply({
-          embeds: [embed]
-        });
-      });
+    const embed = new Discord.MessageEmbed()
+      .setTitle("Channel Updates")
+      .setDescription(`Channel has been created`)
+      .setColor("RANDOM");
+    message.reply({
+      embeds: [embed]
+    });
   },
 };
 ("🐙");

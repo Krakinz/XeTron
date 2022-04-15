@@ -4,6 +4,7 @@
 "🐙";
 "🐙";
 const Discord = require("discord.js");
+const ms = require("ms");
 const {
   PokeList
 } = require("../../pokelist");
@@ -15,25 +16,29 @@ var str = scriptName;
 var newScpt = str.slice(0, -3).toUpperCase();
 module.exports = {
   cooldown: 5,
-  name: "ban",
-  category: "moderation",
-  description: "Ban anyone with one shot whithout knowing anyone xD",
-  usage: "ban <@user> <reason>",
-  userPerms: ["BAN_MEMBERS"],
-  botPerms: ["EMBED_LINKS", "BAN_MEMBERS"],
+  name: "tempmute",
+  category: "info",
+  description: "Returns latency and API ping",
+  userPerms: ["MANAGE_ROLES"],
+  botPerms: ["EMBED_LINKS", "MANAGE_ROLES"],
   run: async (client, message, args) => {
-    let reason = args.slice(1).join(" ");
-    if (!reason) reason = "Unspecified";
-
-    const target =
-      message.mentions.members.first() ||
-      message.guild.users.cache.get(args[0]);
-
-    if (!target) {
+    const user = message.mentions.members.first();
+    const time = args[0];
+    const reason = args.slice(1).join(" ");
+    const role = message.guild.roles.cache.find((ro) => ro.name === "Muted");
+    if (!role) {
+      message.guild.roles.create({
+        data: {
+          name: "muted",
+          color: "GRAY",
+        },
+      });
+    }
+    if (!user || !time || !reason) {
       // """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
       const redArea = `❌${poke.toUpperCase()} says 𝐏𝐨𝐤é𝐎𝐩𝐬𝐢𝐞 \n-⧪   Wrong Usage!\n\n🧀𝐔𝐬𝐚𝐠𝐞\n+⧪   ${message.client.prefix
-        }${newScpt.toLowerCase()} <mention>`;
-      const cyanArea = `💡${newScpt} Details:\n\nBan anyone with one shot whithout knowing anyone xD.`;
+        }${newScpt.toLowerCase()} <mention - time - reason>`;
+      const cyanArea = `💡${newScpt} Details:\n\nReturns latency and API ping of ⚡𝐗𝐞𝐓𝐫𝐨𝐧⚡!`;
       require("dotenv").config();
       await message.react("❌");
       return await message.reply({
@@ -56,39 +61,41 @@ ${cyanArea}
         ],
       });
     }
-    if (target.id === client.user.id) {
+    if (user.id === client.user.id) {
       return await message.reply(`\`\`\`diff
--${message.author.username}, You can not do that to Me Bruv!
+-You can not do that to Me Bruv!
 \`\`\``);
     }
 
-    if (target.id === message.author.id) {
+    if (user.id === message.owner.id) {
       return await message.reply(`\`\`\`diff
--${message.author.username}, You can not ban yourself!
+-You cannot use any Mod Command against the Server Owner
 \`\`\``);
     }
-    if (target.id === message.guild.ownerId) {
-      return await message.reply(`\`\`\`diff
--You cannot Ban The Server Owner
-\`\`\``);
-    }
-
-    let embed = new Discord.MessageEmbed()
-      .setTitle("Action : Ban")
-      .setDescription(`Banned ${target} (${target.id})\nReason: ${reason}`)
-      .setColor("#ff2050")
-      .setThumbnail(target.avatarURL)
-      .setFooter(`Banned by ${message.author.tag}`);
-
-    target
-      .ban({
-        reason: reason,
-      })
-      .then(() => {
-        message.reply({
-          embeds: [embed]
-        });
-      });
+    const mtembde = new Discord.MessageEmbed()
+      .setTitle("Action: Tempmute")
+      .setColor("RANDOM")
+      .addField("User:", user)
+      .addField("Reason", reason)
+      .addField("Moderator:", message.member.displayName)
+      .addField("Time", time, true);
+    const mtuembde = new Discord.MessageEmbed()
+      .setTitle("YOU HAVE BEEN MUTED!!")
+      .setColor("RANDOM")
+      .addField("Reason", reason)
+      .addField("Moderator:", message.member.displayName)
+      .addField("Time", time, true);
+    user.send({
+      embeds: [mtuembde]
+    });
+    message.reply({
+      embeds: [mtembde]
+    });
+    user.roles.add(role);
+    setTimeout(function () {
+      user.roles.remove(role);
+      user.send(`You are now unmuted! We hope you Follow the Rules next time`);
+    }, ms(time));
   },
 };
 ("🐙");

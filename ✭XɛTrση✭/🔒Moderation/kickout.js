@@ -15,17 +15,14 @@ var str = scriptName;
 var newScpt = str.slice(0, -3).toUpperCase();
 module.exports = {
   cooldown: 5,
-  name: "ban",
+  name: "kickout",
   category: "moderation",
-  description: "Ban anyone with one shot whithout knowing anyone xD",
-  usage: "ban <@user> <reason>",
-  userPerms: ["BAN_MEMBERS"],
-  botPerms: ["EMBED_LINKS", "BAN_MEMBERS"],
+  description: "Kick anyone with one shot xD",
+  usage: "kick <@user> <reason>",
+  userPerms: ["KICK_MEMBERS"],
+  botPerms: ["EMBED_LINKS", "KICK_MEMBERS"],
   run: async (client, message, args) => {
-    let reason = args.slice(1).join(" ");
-    if (!reason) reason = "Unspecified";
-
-    const target =
+    let target =
       message.mentions.members.first() ||
       message.guild.users.cache.get(args[0]);
 
@@ -33,7 +30,7 @@ module.exports = {
       // """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
       const redArea = `❌${poke.toUpperCase()} says 𝐏𝐨𝐤é𝐎𝐩𝐬𝐢𝐞 \n-⧪   Wrong Usage!\n\n🧀𝐔𝐬𝐚𝐠𝐞\n+⧪   ${message.client.prefix
         }${newScpt.toLowerCase()} <mention>`;
-      const cyanArea = `💡${newScpt} Details:\n\nBan anyone with one shot whithout knowing anyone xD.`;
+      const cyanArea = `💡${newScpt} Details:\n\nKickout anyone with one shot xD.`;
       require("dotenv").config();
       await message.react("❌");
       return await message.reply({
@@ -58,37 +55,37 @@ ${cyanArea}
     }
     if (target.id === client.user.id) {
       return await message.reply(`\`\`\`diff
--${message.author.username}, You can not do that to Me Bruv!
-\`\`\``);
-    }
-
-    if (target.id === message.author.id) {
-      return await message.reply(`\`\`\`diff
--${message.author.username}, You can not ban yourself!
+You can not do that to Me Bruv!
 \`\`\``);
     }
     if (target.id === message.guild.ownerId) {
       return await message.reply(`\`\`\`diff
--You cannot Ban The Server Owner
+-${message.author.username}, You cannot kick the Server Owner
+\`\`\``);
+    }
+    if (target.id === message.author.id) {
+      return await message.reply(`\`\`\`diff
+-${message.author.username}, You can not kick yourself
 \`\`\``);
     }
 
-    let embed = new Discord.MessageEmbed()
-      .setTitle("Action : Ban")
-      .setDescription(`Banned ${target} (${target.id})\nReason: ${reason}`)
-      .setColor("#ff2050")
-      .setThumbnail(target.avatarURL)
-      .setFooter(`Banned by ${message.author.tag}`);
+    let reason = args.slice(1).join(" ");
+    if (!reason) reason = "-";
 
-    target
-      .ban({
-        reason: reason,
-      })
-      .then(() => {
-        message.reply({
-          embeds: [embed]
-        });
-      });
+    const embed = new Discord.MessageEmbed()
+      .setTitle("KICK MEMBER")
+      .setColor("RANDOM")
+      .setThumbnail(target.user.displayAvatarURL)
+      .setDescription(
+        `Action : Kick \nReason: ${reason} \nUser: ${target} \nModerator: ${message.member}`
+      )
+      .setTimestamp();
+
+    message.reply({
+      embeds: [embed]
+    });
+
+    target.kick(args[0]);
   },
 };
 ("🐙");

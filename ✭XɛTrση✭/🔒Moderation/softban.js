@@ -15,25 +15,17 @@ var str = scriptName;
 var newScpt = str.slice(0, -3).toUpperCase();
 module.exports = {
   cooldown: 5,
-  name: "ban",
-  category: "moderation",
-  description: "Ban anyone with one shot whithout knowing anyone xD",
-  usage: "ban <@user> <reason>",
+  name: "softban",
+  description: "Soft Ban a User",
   userPerms: ["BAN_MEMBERS"],
-  botPerms: ["EMBED_LINKS", "BAN_MEMBERS"],
+  botPerms: ["EMBED_LINKS", "BAN_MEMBERS", "MANAGE_MESSAGES"],
   run: async (client, message, args) => {
-    let reason = args.slice(1).join(" ");
-    if (!reason) reason = "Unspecified";
-
-    const target =
-      message.mentions.members.first() ||
-      message.guild.users.cache.get(args[0]);
-
-    if (!target) {
+    let banMember = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
+    if (!banMember) {
       // """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
       const redArea = `❌${poke.toUpperCase()} says 𝐏𝐨𝐤é𝐎𝐩𝐬𝐢𝐞 \n-⧪   Wrong Usage!\n\n🧀𝐔𝐬𝐚𝐠𝐞\n+⧪   ${message.client.prefix
         }${newScpt.toLowerCase()} <mention>`;
-      const cyanArea = `💡${newScpt} Details:\n\nBan anyone with one shot whithout knowing anyone xD.`;
+      const cyanArea = `💡${newScpt} Details:\n\nSoft Ban a User in the server.`;
       require("dotenv").config();
       await message.react("❌");
       return await message.reply({
@@ -56,39 +48,52 @@ ${cyanArea}
         ],
       });
     }
-    if (target.id === client.user.id) {
+    if (banMember.id === client.user.id) {
       return await message.reply(`\`\`\`diff
--${message.author.username}, You can not do that to Me Bruv!
+-You can not do that to Me Bruv!
 \`\`\``);
     }
+    if (banMember.id === message.guild.owner.id) {
+      return await message.reply(`\`\`\`diff
+-You cannot SoftBan the Server Owner
+\`\`\``);
+    }
+    let reason = args.slice(1).join(" ");
+    if (!reason) reason = "No reason given!";
 
-    if (target.id === message.author.id) {
-      return await message.reply(`\`\`\`diff
--${message.author.username}, You can not ban yourself!
-\`\`\``);
-    }
-    if (target.id === message.guild.ownerId) {
-      return await message.reply(`\`\`\`diff
--You cannot Ban The Server Owner
-\`\`\``);
-    }
+    banMember
+      .send({
+        embed: {
+          color: "#ff0019",
+          description: `Hello, you have been banned from ${message.guild.name} for violating Server Rules`,
+        },
+      })
+      .then(() =>
+        message.guild
+        .member(banMember)
+        .ban(banMember, {
+          days: 1,
+          reason: reason
+        })
+      )
+      .then(() =>
+        message.guild.members
+        .unban(banMember.id)
+        .catch((err) => console.log(err))
+      );
 
     let embed = new Discord.MessageEmbed()
-      .setTitle("Action : Ban")
-      .setDescription(`Banned ${target} (${target.id})\nReason: ${reason}`)
-      .setColor("#ff2050")
-      .setThumbnail(target.avatarURL)
-      .setFooter(`Banned by ${message.author.tag}`);
+      .setThumbnail(banMember.user.displayAvatarURL())
+      .setColor("RANDOM")
+      .addField("Moderation:", "SOFT BAN")
+      .addField("Banned:", banMember.user.username)
+      .addField("Moderator:", message.author.username)
+      .addField("Reason:", reason)
+      .setTimestamp();
 
-    target
-      .ban({
-        reason: reason,
-      })
-      .then(() => {
-        message.reply({
-          embeds: [embed]
-        });
-      });
+    message.reply({
+      embeds: [embed]
+    });
   },
 };
 ("🐙");

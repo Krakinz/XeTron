@@ -4,6 +4,7 @@
 "🐙";
 "🐙";
 const Discord = require("discord.js");
+const ms = require("ms");
 const {
   PokeList
 } = require("../../pokelist");
@@ -15,25 +16,22 @@ var str = scriptName;
 var newScpt = str.slice(0, -3).toUpperCase();
 module.exports = {
   cooldown: 5,
-  name: "ban",
-  category: "moderation",
-  description: "Ban anyone with one shot whithout knowing anyone xD",
-  usage: "ban <@user> <reason>",
-  userPerms: ["BAN_MEMBERS"],
-  botPerms: ["EMBED_LINKS", "BAN_MEMBERS"],
-  run: async (client, message, args) => {
-    let reason = args.slice(1).join(" ");
-    if (!reason) reason = "Unspecified";
+  name: "mute",
+  description: "Mutes the specified user.",
+  usage: "Mute @user [time] [reason]",
+  run: async (client, message, args, Discord) => {
+    const member = message.mentions.members.first();
+    let time = args[1];
+    const reason = args.slice(2).join(" ");
+    const role = message.guild.roles.cache.find(
+      (role) => role.name === "Muted"
+    );
 
-    const target =
-      message.mentions.members.first() ||
-      message.guild.users.cache.get(args[0]);
-
-    if (!target) {
+    if (!member) {
       // """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
       const redArea = `❌${poke.toUpperCase()} says 𝐏𝐨𝐤é𝐎𝐩𝐬𝐢𝐞 \n-⧪   Wrong Usage!\n\n🧀𝐔𝐬𝐚𝐠𝐞\n+⧪   ${message.client.prefix
         }${newScpt.toLowerCase()} <mention>`;
-      const cyanArea = `💡${newScpt} Details:\n\nBan anyone with one shot whithout knowing anyone xD.`;
+      const cyanArea = `💡${newScpt} Details:\n\nMutes the specified user.`;
       require("dotenv").config();
       await message.react("❌");
       return await message.reply({
@@ -56,39 +54,78 @@ ${cyanArea}
         ],
       });
     }
-    if (target.id === client.user.id) {
+    if (member.id === client.user.id) {
       return await message.reply(`\`\`\`diff
 -${message.author.username}, You can not do that to Me Bruv!
 \`\`\``);
     }
 
-    if (target.id === message.author.id) {
+    if (!time) {
       return await message.reply(`\`\`\`diff
--${message.author.username}, You can not ban yourself!
+-${message.author.username}, Tell the time!
 \`\`\``);
     }
-    if (target.id === message.guild.ownerId) {
+    if (!reason) {
       return await message.reply(`\`\`\`diff
--You cannot Ban The Server Owner
+-${message.author.username}, Tell me a reason
 \`\`\``);
     }
 
-    let embed = new Discord.MessageEmbed()
-      .setTitle("Action : Ban")
-      .setDescription(`Banned ${target} (${target.id})\nReason: ${reason}`)
-      .setColor("#ff2050")
-      .setThumbnail(target.avatarURL)
-      .setFooter(`Banned by ${message.author.tag}`);
+    if (member.id === message.author.id)
+      return message.reply("You cant mute your self!");
+    if (member.id === client.id) return message.reply("You cant mute me!");
 
-    target
-      .ban({
-        reason: reason,
-      })
-      .then(() => {
-        message.reply({
-          embeds: [embed]
+    if (!role) {
+      try {
+        message.reply("No muted role.. making one..!");
+        let muterole = await message.guild.roles.create({
+          data: {
+            name: "Muted",
+            permissions: [],
+          },
         });
-      });
+        message.guild.channels.cache
+          .filter((c) => c.type === "text")
+          .forEach(async (channel, id) => {
+            await channel.createOverwrite(muterole, {
+              SEND_MESSAGES: false,
+              ADD_REACTIONS: false,
+            });
+          });
+        message.reply(
+          new Discord.MessageEmbed()
+          .setDescription("Muted role has sucessfully been created")
+          .setColor("GREEN")
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    let role2 = message.guild.roles.cache.find((role) => role.name === "Muted");
+    if (member.roles.cache.has(role2)) {
+      return await message.reply(`\`\`\`diff
+-${message.author.username}, User is already muted!
+\`\`\``);
+    }
+
+    if (
+      member.roles.highest.position >= message.member.roles.highest.position
+    ) {
+      return await message.reply(`\`\`\`diff
+-${message.author.username}, You cant mute this user
+\`\`\``);
+    }
+
+    await member.roles.add(role2);
+    message.reply(
+      `${member.user.username} has been muted for ${ms(
+        ms(time)
+      )}, Reason: ${reason}`
+    );
+
+    setTimeout(() => {
+      member.roles.remove(role2);
+    }, ms(time));
   },
 };
 ("🐙");

@@ -15,25 +15,17 @@ var str = scriptName;
 var newScpt = str.slice(0, -3).toUpperCase();
 module.exports = {
   cooldown: 5,
-  name: "ban",
-  category: "moderation",
-  description: "Ban anyone with one shot whithout knowing anyone xD",
-  usage: "ban <@user> <reason>",
-  userPerms: ["BAN_MEMBERS"],
-  botPerms: ["EMBED_LINKS", "BAN_MEMBERS"],
+  name: "announce",
+  description: "Make an Announcemnet in your Server",
+  userPerms: ["MANAGE_MESSAGES"],
+  botPerms: ["EMBED_LINKS", "MANAGE_MESSAGES"],
   run: async (client, message, args) => {
-    let reason = args.slice(1).join(" ");
-    if (!reason) reason = "Unspecified";
-
-    const target =
-      message.mentions.members.first() ||
-      message.guild.users.cache.get(args[0]);
-
-    if (!target) {
+    const anchannel = message.mentions.channels.first();
+    if (!anchannel) {
       // """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
       const redArea = `❌${poke.toUpperCase()} says 𝐏𝐨𝐤é𝐎𝐩𝐬𝐢𝐞 \n-⧪   Wrong Usage!\n\n🧀𝐔𝐬𝐚𝐠𝐞\n+⧪   ${message.client.prefix
-        }${newScpt.toLowerCase()} <mention>`;
-      const cyanArea = `💡${newScpt} Details:\n\nBan anyone with one shot whithout knowing anyone xD.`;
+        }${newScpt.toLowerCase()} <channel> <msg>`;
+      const cyanArea = `💡${newScpt} Details:\n\nMake an Announcemnet in your Server.`;
       require("dotenv").config();
       await message.react("❌");
       return await message.reply({
@@ -56,39 +48,33 @@ ${cyanArea}
         ],
       });
     }
-    if (target.id === client.user.id) {
+    if (!args.slice(1).join(" ")) {
       return await message.reply(`\`\`\`diff
--${message.author.username}, You can not do that to Me Bruv!
+-Please add some text to make an Announcement
 \`\`\``);
     }
-
-    if (target.id === message.author.id) {
-      return await message.reply(`\`\`\`diff
--${message.author.username}, You can not ban yourself!
-\`\`\``);
-    }
-    if (target.id === message.guild.ownerId) {
-      return await message.reply(`\`\`\`diff
--You cannot Ban The Server Owner
-\`\`\``);
-    }
-
     let embed = new Discord.MessageEmbed()
-      .setTitle("Action : Ban")
-      .setDescription(`Banned ${target} (${target.id})\nReason: ${reason}`)
-      .setColor("#ff2050")
-      .setThumbnail(target.avatarURL)
-      .setFooter(`Banned by ${message.author.tag}`);
-
-    target
-      .ban({
-        reason: reason,
+      .setTitle(`<:ann:748176925792665721> New Server Announcement`)
+      .setDescription(args.slice(1).join(" "), {
+        allowedMentions: {
+          parse: ["users"]
+        },
       })
-      .then(() => {
-        message.reply({
-          embeds: [embed]
-        });
-      });
+      .setColor("RANDOM")
+      .setFooter(`Announcement by ${message.author.username}`);
+    anchannel.send({
+      embeds: [embed]
+    });
+
+    let anembed = new Discord.MessageEmbed()
+      .setTitle("Done!")
+      .setDescription(`Announcement has been sent to ${anchannel}`)
+      .setColor("RANDOM");
+
+    message.reply({
+      embeds: [anembed]
+    });
+    message.delete();
   },
 };
 ("🐙");
