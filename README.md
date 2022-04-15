@@ -5,7 +5,7 @@
 - [![Generic badge](https://img.shields.io/badge/👑XeTron™-yellow.svg)](https://discord.com/api/oauth2/authorize?client_id=897486855233216562&permissions=8&scope=bot%20applications.commands)
 - 𝙳𝚒𝚛𝚎𝚌𝚝𝚕𝚢 𝚞𝚜𝚎 𝚃𝚑𝚎 𝙱𝚘𝚝 𝚒𝚗 Discord
 
-<p align="centre"><img  width="80%" height="80%" img src="https://github.com/Krakinz/XeTron/blob/KrakinzLab/GroundXeno/XeTron.png" /></p>
+<p align="centre"><img  width="200%" height="80%" img src="https://github.com/Krakinz/XeTron/blob/KrakinzLab/GroundXeno/XeTron.png" /></p>
 
 ### ❓ WΉY MΛDΣ ƬΉIS BӨƬ?
 
