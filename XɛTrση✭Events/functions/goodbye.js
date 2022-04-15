@@ -3,8 +3,8 @@
 "🐙============================================================================================================================<⚡>";
 "🐙";
 "🐙";
-const welcomeData = require("../../XɛTrση✭Database/welcome");
-const welcomemsg = require("../../XɛTrση✭Database/joinmsg");
+const byemsg = require("../../XɛTrση✭Database/leavemessage");
+const byeData = require("../../XɛTrση✭Database/goodbyechannel");
 const { MessageEmbed, MessageAttachment } = require("discord.js");
 const XeTronCanvas = require("canvas");
 const Greeters = [
@@ -20,29 +20,29 @@ const Greeters = [
   "GroundXeno/Greet/h9.png",
 ];
 module.exports = async (member) => {
-  const data = await welcomeData.findOne({
+  const data = await byeData.findOne({
     Ӽɛȶʀօռֆɨɖ: member.guild.id,
   });
   if (data) {
-    const data2 = await welcomemsg.findOne({
+    const data2 = await byemsg.findOne({
       Ӽɛȶʀօռֆɨɖ: member.guild.id,
     });
     if (data2) {
-      var joinmessage = data2.JoinMsg;
-      joinmessage = joinmessage.replace("{user.mention}", `${member}`);
-      joinmessage = joinmessage.replace("{user.name}", `${member.user.tag}`);
-      joinmessage = joinmessage.replace("{server}", `${member.guild.name}`);
-      joinmessage = joinmessage.replace(
+      var leavemessage = data2.JoinMsg;
+      leavemessage = leavemessage.replace("{user.mention}", `${member}`);
+      leavemessage = leavemessage.replace("{user.name}", `${member.user.tag}`);
+      leavemessage = leavemessage.replace("{server}", `${member.guild.name}`);
+      leavemessage = leavemessage.replace(
         "{membercount}",
         `${member.guild.memberCount}`
       );
       let embed = new MessageEmbed()
-        .setDescription(joinmessage)
+        .setDescription(leavemessage)
         .setColor("GREEN");
-      let channel = data.Welcome;
+      let channel = data.Bye;
       member.guild.channels.cache.get(channel).send({ embeds: [embed] });
     } else if (!data2) {
-      let channel = data.Welcome;
+      let channel = data.Bye;
       const XeCanvas = XeTronCanvas.createCanvas(1772, 633);
       const XeCtx = XeCanvas.getContext("2d");
       let Greeter = Greeters[Math.floor(Math.random() * Greeters.length)];
@@ -88,14 +88,14 @@ module.exports = async (member) => {
         embeds: [
           new MessageEmbed()
             .setTimestamp()
-            .setTitle("Welcome")
-            .setColor(process.env.XeTrons || "#FFBF00")
+            .setTitle("Bye")
+            .setColor(process.env.NaNKol)
             .setDescription(
-              `${member}, Welcome to **${member.guild.name}**! We hope you like our Server! Enjoy Your Stay here!`
+              `${member},left **${member.guild.name}**! We hope you liked our Server and hope to see you soon!`
             )
             .setThumbnail(`${member.user.displayAvatarURL()}`)
             .addField(
-              `** Member Count **⚡`,
+              `** Current Member Count **⚡`,
               `ɴᴜᴍ: #${member.guild.memberCount} `,
               true
             )
@@ -103,16 +103,9 @@ module.exports = async (member) => {
               `** Discriminator **💳`,
               `ɪᴅ: #${member.user.discriminator} `,
               true
-            )
-            .addField(`** Server Name **💡`, `${member.guild.name} `, true)
-            .setFooter(
-              `𝘥𝘰 𝘯𝘰𝘵 𝘧𝘰𝘳𝘨𝘦𝘵 𝘵𝘰 𝘳𝘦𝘢𝘥 𝘢𝘯𝘥 𝘢𝘤𝘤𝘦𝘱𝘵 𝘵𝘩𝘦 𝘳𝘶𝘭𝘦𝘴 𝘰𝘧 𝘴𝘦𝘳𝘷𝘦𝘳.`,
-              `${member.user.displayAvatarURL()}`
             ),
         ],
-        files: [
-          new MessageAttachment(XeCanvas.toBuffer(), "welcome-image.png"),
-        ],
+        files: [new MessageAttachment(XeCanvas.toBuffer(), "Bye-image.png")],
       });
     }
   }
