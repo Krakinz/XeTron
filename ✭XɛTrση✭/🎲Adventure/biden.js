@@ -15,14 +15,16 @@ var str = scriptName;
 var newScpt = str.slice(0, -3).toUpperCase();
 module.exports = {
   cooldown: 5,
-  name: "clap",
-  description: "Add clap emoji between each word",
+  name: "biden",
+  permissions: ["SEND_MESSAGES"],
+  cooldown: 3,
+  description: "Get a custom Tweet from Biden!",
   run: async (client, message, args) => {
-    if (!args.length) {
+    if (!args[0]) {
       // """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
       const redArea = `❌${poke.toUpperCase()} says 𝐏𝐨𝐤é𝐎𝐩𝐬𝐢𝐞 \n-⧪   Wrong Usage!\n\n🧀𝐔𝐬𝐚𝐠𝐞\n+⧪   ${message.client.prefix
-        }${newScpt.toLowerCase()} <msg>`;
-      const cyanArea = `💡${newScpt} Details:\n\n`;
+        }${newScpt.toLowerCase()} <text>`;
+      const cyanArea = `💡${newScpt} Details:\n\nGet a custom Tweet from Biden!`;
       require("dotenv").config();
       await message.react("❌");
       return await message.reply({
@@ -45,9 +47,18 @@ ${cyanArea}
         ],
       });
     }
-    await message.reply(`\`\`\`diff
-+${args.join(" ").replace(/ /g, " 👏 ")}
+    let bidenMessage = args.slice(0).join(" ");
+    if (bidenMessage.length > 65) {
+      return await message.reply(`\`\`\`diff
+-You Are Not Allowed To Go Over 65 Characters!
 \`\`\``);
+    }
+    message.reply({
+      files: [{
+        attachment: `https://api.popcatdev.repl.co/biden?text=${bidenMessage}`,
+        name: "reaperbiden.jpg",
+      }, ],
+    });
   },
 };
 ("🐙");

@@ -13,15 +13,39 @@ console.log(poke);
 var scriptName = path.basename(__filename);
 var str = scriptName;
 var newScpt = str.slice(0, -3).toUpperCase();
+const mapping = {
+  " ": "   ",
+  0: ":zero:",
+  1: ":one:",
+  2: ":two:",
+  3: ":three:",
+  4: ":four:",
+  5: ":five:",
+  6: ":six:",
+  7: ":seven:",
+  8: ":eight:",
+  9: ":nine:",
+  "!": ":grey_exclamation:",
+  "?": ":grey_question:",
+  "#": ":hash:",
+  "*": ":asterisk:",
+};
+"abcdefghijklmnopqrstuvwxyz".split("").forEach((c) => {
+  mapping[c] = mapping[c.toUpperCase()] = ` :regional_indicator_${c}:`;
+});
 module.exports = {
   cooldown: 5,
-  name: "clap",
-  description: "Add clap emoji between each word",
+  name: "emojify",
+  aliases: [],
+  category: "Fun",
+  usage: "emojify <text>",
+  description: "Returns provided text in emojify (emotes) form.",
+  botPerms: ["MANAGE_MESSAGES"],
   run: async (client, message, args) => {
-    if (!args.length) {
+    if (args.length < 1) {
       // """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
       const redArea = `❌${poke.toUpperCase()} says 𝐏𝐨𝐤é𝐎𝐩𝐬𝐢𝐞 \n-⧪   Wrong Usage!\n\n🧀𝐔𝐬𝐚𝐠𝐞\n+⧪   ${message.client.prefix
-        }${newScpt.toLowerCase()} <msg>`;
+        }${newScpt.toLowerCase()} <text to emojify>`;
       const cyanArea = `💡${newScpt} Details:\n\n`;
       require("dotenv").config();
       await message.react("❌");
@@ -46,7 +70,11 @@ ${cyanArea}
       });
     }
     await message.reply(`\`\`\`diff
-+${args.join(" ").replace(/ /g, " 👏 ")}
++${args
+        .join(" ")
+        .split("")
+        .map((c) => mapping[c] || c)
+        .join("")}
 \`\`\``);
   },
 };

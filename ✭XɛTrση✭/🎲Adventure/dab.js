@@ -15,13 +15,14 @@ var str = scriptName;
 var newScpt = str.slice(0, -3).toUpperCase();
 module.exports = {
   cooldown: 5,
-  name: "clap",
-  description: "Add clap emoji between each word",
+  name: "dab",
+  description: "Adds dab emoji after each word",
+  botPerms: ["USE_EXTERNAL_EMOJIS"],
   run: async (client, message, args) => {
     if (!args.length) {
       // """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
       const redArea = `❌${poke.toUpperCase()} says 𝐏𝐨𝐤é𝐎𝐩𝐬𝐢𝐞 \n-⧪   Wrong Usage!\n\n🧀𝐔𝐬𝐚𝐠𝐞\n+⧪   ${message.client.prefix
-        }${newScpt.toLowerCase()} <msg>`;
+        }${newScpt.toLowerCase()} <text>`;
       const cyanArea = `💡${newScpt} Details:\n\n`;
       require("dotenv").config();
       await message.react("❌");
@@ -46,7 +47,7 @@ ${cyanArea}
       });
     }
     await message.reply(`\`\`\`diff
-+${args.join(" ").replace(/ /g, " 👏 ")}
++${args.join(" ").replace(/ /g, " <a:emoji_9:726786422866182186> ")}
 \`\`\``);
   },
 };

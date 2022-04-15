@@ -4,6 +4,7 @@
 "🐙";
 "🐙";
 const Discord = require("discord.js");
+const giphy = require("giphy-api")("W8g6R14C0hpH6ZMon9HV9FTqKs4o4rCk");
 const {
   PokeList
 } = require("../../pokelist");
@@ -15,13 +16,14 @@ var str = scriptName;
 var newScpt = str.slice(0, -3).toUpperCase();
 module.exports = {
   cooldown: 5,
-  name: "clap",
-  description: "Add clap emoji between each word",
+  name: "gif",
+  description: "Get gifs based on your search",
+  botPerms: ["EMBED_LINKS", "MANAGE_MESSAGES"],
   run: async (client, message, args) => {
-    if (!args.length) {
+    if (args.length === 0) {
       // """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
       const redArea = `❌${poke.toUpperCase()} says 𝐏𝐨𝐤é𝐎𝐩𝐬𝐢𝐞 \n-⧪   Wrong Usage!\n\n🧀𝐔𝐬𝐚𝐠𝐞\n+⧪   ${message.client.prefix
-        }${newScpt.toLowerCase()} <msg>`;
+        }${newScpt.toLowerCase()} <Search terms>`;
       const cyanArea = `💡${newScpt} Details:\n\n`;
       require("dotenv").config();
       await message.react("❌");
@@ -45,13 +47,26 @@ ${cyanArea}
         ],
       });
     }
-    await message.reply(`\`\`\`diff
-+${args.join(" ").replace(/ /g, " 👏 ")}
-\`\`\``);
+    if (args.length === 1) {
+      term = args.toString();
+    } else {
+      term = args.join(" ");
+    }
+    giphy.search(term).then(function (res) {
+      let id = res.data[0].id;
+      let msgurl = `https://media.giphy.com/media/${id}/giphy.gif`;
+      const embed = new Discord.MessageEmbed()
+        .setTitle(`First result for \`${term}\` on GIPHY`)
+        .setImage(msgurl)
+        .setColor("RANDOM");
+      message.reply({
+        embeds: [embed]
+      });
+    });
   },
 };
-("🐙");
-("🐙");
-("🐙============================================================================================================================<⚡>");
-("⚡𝐗𝐞𝐓𝐫𝐨𝐧⚡ 𝐢𝐬 𝐚 𝐃𝐢𝐬𝐜𝐨𝐫𝐝 𝐒𝐞𝐫𝐯𝐞𝐫 𝐌𝐮𝐥𝐭𝐢𝐏𝐮𝐫𝐩𝐨𝐬𝐞𝐁𝐨𝐭 𝐰𝐢𝐭𝐡 𝐌𝐨𝐝𝐞𝐫𝐚𝐭𝐢𝐨𝐧,𝐀𝐮𝐭𝐨𝐦𝐚𝐭𝐢𝐨𝐧 𝐚𝐧𝐝 𝟏𝟎𝟎+ 𝐦𝐨𝐫𝐞 𝐜𝐨𝐦𝐦𝐚𝐧𝐝𝐬!");
-("🐙============================================================================================================================<⚡>");
+"🐙";
+"🐙";
+"🐙============================================================================================================================<⚡>";
+"⚡𝐗𝐞𝐓𝐫𝐨𝐧⚡ 𝐢𝐬 𝐚 𝐃𝐢𝐬𝐜𝐨𝐫𝐝 𝐒𝐞𝐫𝐯𝐞𝐫 𝐌𝐮𝐥𝐭𝐢𝐏𝐮𝐫𝐩𝐨𝐬𝐞𝐁𝐨𝐭 𝐰𝐢𝐭𝐡 𝐌𝐨𝐝𝐞𝐫𝐚𝐭𝐢𝐨𝐧,𝐀𝐮𝐭𝐨𝐦𝐚𝐭𝐢𝐨𝐧 𝐚𝐧𝐝 𝟏𝟎𝟎+ 𝐦𝐨𝐫𝐞 𝐜𝐨𝐦𝐦𝐚𝐧𝐝𝐬!";
+"🐙============================================================================================================================<⚡>";

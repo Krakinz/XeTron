@@ -15,14 +15,16 @@ var str = scriptName;
 var newScpt = str.slice(0, -3).toUpperCase();
 module.exports = {
   cooldown: 5,
-  name: "clap",
-  description: "Add clap emoji between each word",
+  name: "alert",
+  permissions: ["SEND_MESSAGES"],
+  cooldown: 3,
+  description: "Get an Alert message!",
   run: async (client, message, args) => {
-    if (!args.length) {
+    if (!args[0]) {
       // """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
       const redArea = `❌${poke.toUpperCase()} says 𝐏𝐨𝐤é𝐎𝐩𝐬𝐢𝐞 \n-⧪   Wrong Usage!\n\n🧀𝐔𝐬𝐚𝐠𝐞\n+⧪   ${message.client.prefix
-        }${newScpt.toLowerCase()} <msg>`;
-      const cyanArea = `💡${newScpt} Details:\n\n`;
+        }${newScpt.toLowerCase()} <txt>`;
+      const cyanArea = `💡${newScpt} Details:\n\nGet an Alert message!`;
       require("dotenv").config();
       await message.react("❌");
       return await message.reply({
@@ -45,9 +47,18 @@ ${cyanArea}
         ],
       });
     }
-    await message.reply(`\`\`\`diff
-+${args.join(" ").replace(/ /g, " 👏 ")}
+    let alertMessage = args.slice(0).join(" ");
+    if (alertMessage.length > 65) {
+      return await message.reply(`\`\`\`diff
+-You Are Not Allowed To Go Over 65 Characters!
 \`\`\``);
+    }
+    message.reply({
+      files: [{
+        attachment: `https://api.popcatdev.repl.co/alert?text=${alertMessage}`,
+        name: "reaperalert.jpg",
+      }, ],
+    });
   },
 };
 ("🐙");

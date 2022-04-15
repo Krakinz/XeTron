@@ -15,14 +15,14 @@ var str = scriptName;
 var newScpt = str.slice(0, -3).toUpperCase();
 module.exports = {
   cooldown: 5,
-  name: "clap",
-  description: "Add clap emoji between each word",
+  name: "8ball",
+  description: "Tells you a fortune",
   run: async (client, message, args) => {
-    if (!args.length) {
+    if (args.length == 0) {
       // """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
       const redArea = `❌${poke.toUpperCase()} says 𝐏𝐨𝐤é𝐎𝐩𝐬𝐢𝐞 \n-⧪   Wrong Usage!\n\n🧀𝐔𝐬𝐚𝐠𝐞\n+⧪   ${message.client.prefix
         }${newScpt.toLowerCase()} <msg>`;
-      const cyanArea = `💡${newScpt} Details:\n\n`;
+      const cyanArea = `💡${newScpt} Details:\n\nTells you a fortune`;
       require("dotenv").config();
       await message.react("❌");
       return await message.reply({
@@ -45,8 +45,30 @@ ${cyanArea}
         ],
       });
     }
+    var fortunes = [
+      "Yes.",
+      "It is certain.",
+      "It is decidedly so.",
+      "Without a doubt.",
+      "Yes definelty.",
+      "You may rely on it.",
+      "As I see it, yes.",
+      "Most likely.",
+      "Outlook good.",
+      "Signs point to yes.",
+      "Reply hazy, try again.",
+      "Ask again later.",
+      "Better not tell you now...",
+      "Cannot predict now.",
+      "Concentrate and ask again.",
+      "Don't count on it.",
+      "My reply is no.",
+      "My sources say no.",
+      "Outlook not so good...",
+      "Very doubtful.",
+    ];
     await message.reply(`\`\`\`diff
-+${args.join(" ").replace(/ /g, " 👏 ")}
++${fortunes[Math.floor(Math.random() * fortunes.length)]}
 \`\`\``);
   },
 };

@@ -15,13 +15,14 @@ var str = scriptName;
 var newScpt = str.slice(0, -3).toUpperCase();
 module.exports = {
   cooldown: 5,
-  name: "clap",
-  description: "Add clap emoji between each word",
+  name: "reverse",
+  description: "Reverse the text entered",
   run: async (client, message, args) => {
-    if (!args.length) {
+    let strg = args.join(" ");
+    if (!strg) {
       // """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
       const redArea = `❌${poke.toUpperCase()} says 𝐏𝐨𝐤é𝐎𝐩𝐬𝐢𝐞 \n-⧪   Wrong Usage!\n\n🧀𝐔𝐬𝐚𝐠𝐞\n+⧪   ${message.client.prefix
-        }${newScpt.toLowerCase()} <msg>`;
+        }${newScpt.toLowerCase()} <text>`;
       const cyanArea = `💡${newScpt} Details:\n\n`;
       require("dotenv").config();
       await message.react("❌");
@@ -46,7 +47,7 @@ ${cyanArea}
       });
     }
     await message.reply(`\`\`\`diff
-+${args.join(" ").replace(/ /g, " 👏 ")}
++${str.split("").reverse().join("")}
 \`\`\``);
   },
 };

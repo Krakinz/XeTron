@@ -4,6 +4,7 @@
 "🐙";
 "🐙";
 const Discord = require("discord.js");
+const flip = require("flip-text");
 const {
   PokeList
 } = require("../../pokelist");
@@ -15,13 +16,15 @@ var str = scriptName;
 var newScpt = str.slice(0, -3).toUpperCase();
 module.exports = {
   cooldown: 5,
-  name: "clap",
-  description: "Add clap emoji between each word",
+  name: "fliptext",
+  description: "Flip some text",
+  usage: "fliptext <text>",
+  type: "Fun",
   run: async (client, message, args) => {
-    if (!args.length) {
+    if (args.length < 1) {
       // """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
       const redArea = `❌${poke.toUpperCase()} says 𝐏𝐨𝐤é𝐎𝐩𝐬𝐢𝐞 \n-⧪   Wrong Usage!\n\n🧀𝐔𝐬𝐚𝐠𝐞\n+⧪   ${message.client.prefix
-        }${newScpt.toLowerCase()} <msg>`;
+        }${newScpt.toLowerCase()} <text to flip>`;
       const cyanArea = `💡${newScpt} Details:\n\n`;
       require("dotenv").config();
       await message.react("❌");
@@ -45,9 +48,14 @@ ${cyanArea}
         ],
       });
     }
+    args.reverse();
+    var flipped = [];
+    args.forEach((arg) => {
+      flipped.push(flip(arg));
+    });
     await message.reply(`\`\`\`diff
-+${args.join(" ").replace(/ /g, " 👏 ")}
-\`\`\``);
++${flipped.join(" ")}
+    \`\`\``);
   },
 };
 ("🐙");
