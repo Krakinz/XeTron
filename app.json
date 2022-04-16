@@ -3,6 +3,22 @@
     "name": " 👑XeTron-Discord-Multi☣️purpose bot™",
     "repository": "https://github.com/Krakinz/XeTron.git",
     "description": " 👑XeTron-Discord-Multi☣️purpose bot™",
-    "website": "https://t.me/Krakns",
+    "website": "https://t.me/KrakinzKon",
     "stack": "container"
+,
+    "env": {
+      "KRAKINZLAB": 
+            { "description": "Discord api token",
+      "required": true },
+            "XeFixer": 
+            { "description": "Prefix or commands handler",
+      "required": false },
+            "redArea": 
+            { "description": "Xetron colors handler. don't change here !",
+      "value": "true",
+      "required": true },
+            "XeTrons": 
+            { "description": "Discord api ID",
+      "required": true }
+}
 }
